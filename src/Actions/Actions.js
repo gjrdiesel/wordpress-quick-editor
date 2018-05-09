@@ -5,6 +5,7 @@ import exampleCSV from '../example.csv'
 export default {
     editCancelled(component) {
         component.setState({confirmed: false, loaded: false})
+        localStorage.clear();
     },
     editConfirmed(component) {
         component.setState({confirmed: true})
