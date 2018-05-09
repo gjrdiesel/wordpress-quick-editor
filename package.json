@@ -2,7 +2,9 @@
   "name": "wordpress-quick-editor",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://gjrdiesel.github.io/wordpress-quick-editor",
   "dependencies": {
+    "gh-pages": "^1.1.0",
     "papaparse": "^4.4.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
@@ -10,6 +12,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
