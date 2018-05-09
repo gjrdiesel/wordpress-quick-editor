@@ -3,8 +3,16 @@ import Static from './index'
 
 export default {
     parserTimeout: null,
-    captureCSV(component) {
+    getInput() {
+        return document.querySelector(`#${Static.TEXTAREA_ID}`).value;
+    },
+    clearPreviousDelay() {
         clearTimeout(this.parserTimeout);
+    },
+    triggerTimeoutDelay(component) {
+
+        this.clearPreviousDelay();
+
         component.setState({
             waiting: true,
             errors: false,
@@ -12,17 +20,44 @@ export default {
             data: null,
         }, () => this.parserTimeout = setTimeout(() => this.csvToState(component), 2000));
     },
-    csvToState(component) {
-        let result = Papa.parse(
-            document.querySelector(`#${Static.TEXTAREA_ID}`).value
-        );
+    inputIsBlank(component) {
+        let value = this.getInput();
 
-        if (result.errors.length === 0) {
-            component.setState({waiting: false, loaded: true, errors: false, data: result.data});
+        if (!value || value.length < 10) {
+            this.resetComponentToWaiting(component);
+            return true;
+        }
+
+        return false;
+    },
+    resetComponentToWaiting(component) {
+        this.clearPreviousDelay();
+        component.setState({waiting: false, loaded: false, errors: false});
+    },
+    captureCSV(component, event) {
+
+        if (event.key !== 'v' && event.key !== 'Meta' && event.key !== 'Enter') {
+            return;
+        }
+
+        this.triggerTimeoutDelay(component);
+
+    },
+    csvToState(component) {
+
+        if (this.inputIsBlank(component)) {
+            return;
+        }
+
+        let data = Papa.parse(this.getInput());
+        data.headers = data.data.shift();
+
+        if (data.errors.length === 0) {
+            component.setState({waiting: false, loaded: true, errors: false, data});
             localStorage.setItem(Static.LOCALSTORAGE_KEY, JSON.stringify(component.state));
             return;
         }
 
-        component.setState({waiting: false, loaded: false, errors: result.errors});
+        component.setState({waiting: false, loaded: false, errors: data.errors});
     }
 }

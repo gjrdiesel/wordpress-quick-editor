@@ -15,11 +15,14 @@ export default {
             .then(res => res.text())
             .then(text => {
                 document.querySelector(`#${Static.TEXTAREA_ID}`).value = text
-                Parser.captureCSV(fromApp);
+                Parser.csvToState(fromApp);
             })
             .catch(errors => fromApp.setState({errors}))
     },
     loadPreviousStateFrom(component) {
+
+        return; // this requires more thought
+
         let previousState = localStorage.getItem(Static.LOCALSTORAGE_KEY);
         if (!previousState) {
             return;

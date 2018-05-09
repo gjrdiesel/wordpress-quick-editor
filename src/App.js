@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
-import './App.css';
 import CaptureCSV from './components/CaptureCSV'
 import Editor from './components/Editor'
 import Actions from './Actions/'
+
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 class App extends Component {
 
@@ -23,7 +25,7 @@ class App extends Component {
             <Editor {...this.state} />
             <CaptureCSV
                 {...this.state}
-                parseTimeout={() => Actions.captureCSV(this)}
+                parseTimeout={event => Actions.captureCSV(this, event)}
                 cancelEdit={() => Actions.editCancelled(this)}
                 confirmEdit={() => Actions.editConfirmed(this)}
                 loadExample={() => Actions.loadExampleData(this)}

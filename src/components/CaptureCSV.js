@@ -20,6 +20,7 @@ export default props => {
         return null;
     }
 
+
     let csvNotLoaded = props.loaded === false && props.confirmed === false;
     if (csvNotLoaded) {
         return <WaitForData {...props}/>;

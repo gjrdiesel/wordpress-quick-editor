@@ -8,7 +8,7 @@ export default ({data, confirmEdit, cancelEdit}) => <div className="container" s
             </h3>
         </div>
         <div className="panel-body">
-            <pre>{JSON.stringify([data[0], data[1]], null, 2)}</pre>
+            <pre>{JSON.stringify([data.headers, data.data[1]], null, 2)}</pre>
             <button className="btn btn-success"
                     style={{marginRight: 20}}
                     onClick={confirmEdit}>Yep, let's edit

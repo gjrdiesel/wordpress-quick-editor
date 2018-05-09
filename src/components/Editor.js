@@ -10,28 +10,8 @@ function strip(html) {
 
 export default class extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        let headers = props.data.shift();
-        let data = props.data.map(row => {
-            headers.forEach((key, num) => {
-                row[key] = row[num];
-
-                if (key === 'Images') {
-                    row[num] = <img src={row[num]} height={40}/>;
-                } else {
-                    row[num] = strip(row[num]).substring(0, 80);
-                }
-
-            });
-
-            return row;
-        });
-
-        this.state = {
-            headers, data, highlight: null
-        }
+    state = {
+        highlight: null
     }
 
     closePopover = () => {
@@ -51,10 +31,10 @@ export default class extends React.Component {
     </tr>;
 
     render() {
-        let {confirmed} = this.props;
+        let {confirmed, data} = this.props;
         if (!confirmed) return null;
 
-        let {data, headers, highlight} = this.state;
+        let {highlight} = this.state;
 
         return <div className="container-fluid">
             <ProductPopover data={highlight} onClick={this.closePopover}/>
@@ -70,11 +50,11 @@ export default class extends React.Component {
             <table className="table table-bordered table-hover table-striped">
                 <thead>
                 <tr>
-                    {headers.map(th => <th>{th}</th>)}
+                    {data.headers.map(th => <th>{th}</th>)}
                 </tr>
                 </thead>
                 <tbody>
-                {data.map(this.renderTable)}
+                {data.data.map(this.renderTable)}
                 </tbody>
             </table>
         </div>
