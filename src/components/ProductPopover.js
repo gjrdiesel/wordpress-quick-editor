@@ -28,6 +28,9 @@ const Content = data => <div>
         </a>
     </div>
 
+    <h4>Categories:</h4>
+    <div dangerouslySetInnerHTML={{__html: data.Categories}}/>
+
     <h3>Short Description <button className="btn btn-default btn-sm"
                                   onClick={() => this.setState({left: true})}>
         <span className="glyphicon glyphicon-chevron-left"/> Edit

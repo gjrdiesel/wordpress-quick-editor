@@ -26,9 +26,12 @@ export default class extends React.Component {
         }
     }
 
-    renderTable = row => <tr onClick={() => this.handleRowClick(row)}>
-        {row.map(td => <td>{td}</td>)}
-    </tr>;
+    getCategoryData = cat => {
+        if(!cat) return '';
+        cat = Papa.parse(cat);
+
+        return cat.data.length;
+    }
 
     render() {
         let {confirmed, data} = this.props;
@@ -54,7 +57,15 @@ export default class extends React.Component {
                 </tr>
                 </thead>
                 <tbody>
-                {data.data.map(this.renderTable)}
+                {data.data.map(row => <tr onClick={() => this.handleRowClick(row)}>
+                    <td>{row.ID}</td>
+                    <td>{row.SKU}</td>
+                    <td>Short Description</td>
+                    <td>{strip(row.Description).substring(0,80)}</td>
+                    <td>{this.getCategoryData(row.Categories)}</td>
+                    <td>{row.Images}</td>
+                </tr>)
+                }
                 </tbody>
             </table>
         </div>

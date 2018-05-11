@@ -52,6 +52,13 @@ export default {
         let data = Papa.parse(this.getInput());
         data.headers = data.data.shift();
 
+        data.data.map(row=>{
+            data.headers.forEach((key,id)=>{
+                row[key] = row[id];
+            })
+            return row;
+        })
+
         if (data.errors.length === 0) {
             component.setState({waiting: false, loaded: true, errors: false, data});
             localStorage.setItem(Static.LOCALSTORAGE_KEY, JSON.stringify(component.state));
