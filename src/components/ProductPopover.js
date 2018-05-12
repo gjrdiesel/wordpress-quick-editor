@@ -29,7 +29,7 @@ const Content = data => <div>
     </div>
 
     <h4>Categories:</h4>
-    <div dangerouslySetInnerHTML={{__html: data.Categories}}/>
+    <textarea className="form-control" rows={20} defaultValue={data.Categories.map(cat=>`\n${cat}`)}/>
 
     <h3>Short Description <button className="btn btn-default btn-sm"
                                   onClick={() => this.setState({left: true})}>

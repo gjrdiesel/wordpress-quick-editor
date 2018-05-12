@@ -27,10 +27,7 @@ export default class extends React.Component {
     }
 
     getCategoryData = cat => {
-        if(!cat) return '';
-        cat = Papa.parse(cat);
-
-        return cat.data.length;
+        return cat && cat.length;
     }
 
     render() {
@@ -57,11 +54,12 @@ export default class extends React.Component {
                 </tr>
                 </thead>
                 <tbody>
-                {data.data.map(row => <tr onClick={() => this.handleRowClick(row)}>
+                {data.data.map(row => <tr style={highlight === row?{background:'yellow'}:{}}
+                                          onClick={() => this.handleRowClick(row)}>
                     <td>{row.ID}</td>
                     <td>{row.SKU}</td>
                     <td>Short Description</td>
-                    <td>{strip(row.Description).substring(0,80)}</td>
+                    <td>{strip(row.Description).substring(0, 80)}</td>
                     <td>{this.getCategoryData(row.Categories)}</td>
                     <td>{row.Images}</td>
                 </tr>)

@@ -4,7 +4,8 @@ import Static from './index'
 export default {
     parserTimeout: null,
     getInput() {
-        return document.querySelector(`#${Static.TEXTAREA_ID}`).value;
+        let el = document.querySelector(`#${Static.TEXTAREA_ID}`);
+        return el && el.value;
     },
     clearPreviousDelay() {
         clearTimeout(this.parserTimeout);
@@ -49,19 +50,32 @@ export default {
             return;
         }
 
-        let data = Papa.parse(this.getInput());
+        this.mapData(component);
+
+    },
+    mapData(component) {
+        let input = this.getInput();
+        let data = Papa.parse(input);
         data.headers = data.data.shift();
 
-        data.data.map(row=>{
-            data.headers.forEach((key,id)=>{
-                row[key] = row[id];
+        data.data.map(row => {
+            data.headers.forEach((key, id) => {
+                let result = row[id];
+                if (key === 'Categories' && result) {
+                    let categories = Papa.parse(result).data[0];
+                    row[key] = categories.map(cat => {
+                        return Papa.parse(cat, {delimiter: '>'}).data[0].map(result => result.trim());
+                    });
+                } else {
+                    row[key] = result;
+                }
             })
             return row;
         })
 
         if (data.errors.length === 0) {
             component.setState({waiting: false, loaded: true, errors: false, data});
-            localStorage.setItem(Static.LOCALSTORAGE_KEY, JSON.stringify(component.state));
+            window.localStorage && localStorage.setItem(Static.LOCALSTORAGE_KEY, JSON.stringify(component.state));
             return;
         }
 
